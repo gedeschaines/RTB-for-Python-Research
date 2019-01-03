@@ -394,6 +394,11 @@ def shape_xform(x, y, z, Tr):
 
     # apply transform to packed shape coordinates
     Vtr = np.dot(Tr, xyz1)
+    """ NumPy matrix type work with Matplotlib's plot routines, but not ipyvolume's.
+    xr = Vtr[0,:].reshape((dim,dim))
+    yr = Vtr[1,:].reshape((dim,dim))
+    zr = Vtr[2,:].reshape((dim,dim))
+    """
     xr = np.asarray(Vtr[0,:].reshape((dim,dim)))
     yr = np.asarray(Vtr[1,:].reshape((dim,dim)))
     zr = np.asarray(Vtr[2,:].reshape((dim,dim)))

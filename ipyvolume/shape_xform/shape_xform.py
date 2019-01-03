@@ -1,20 +1,38 @@
 
 # coding: utf-8
 
-# In[1]:
+# In[ ]:
 
 
 # FILE: shape_xform.ipynb
-# DATE: 1 JAN 2019
+# DATE: 2 JAN 2019
 # AUTH: G. E. Deschaines
-# DESC: This Jupyter notebook presents a rudimentary implementation of the basic Robotics Toolbox (RTB) for MATLAB
-#       3D graphic elements -- coordinate frame transform and manipulator arm/joint cylinder -- displayed by the
-#       trplot() function and SerialLink.plot() method respectively. The implementation presented herein is only a
-#       proof of principle demonstration for suitability of ipyvolume/ipywidgets as a RTB for Python GUI supported 
-#       by Jupyter lab and notebooks.
+# DESC: This Jupyter notebook presents a rudimentary implementation of the basic Robotics Toolbox
+#       (RTB) for MATLAB 3D graphic elements -- coordinate frame transform and manipulator arm/joint
+#       cylinder -- displayed by the trplot() function and SerialLink.plot() method respectively.
+#       Implementation presented herein is only a proof of principle demonstration for suitability
+#       of ipyvolume/ipywidgets as a RTB for Python GUI supported by Jupyter lab and notebooks.
+#
+# REVS:
+#
+#   01-02-2019  Reason: Added header REVS section to document changes made to this notebook on
+#                       MyBinder Hub site before committed to GitHub repository.
+#                       
+#   01-02-2019  Reason: Found out how to save controlled animations which can be viewed in an 
+#                       HTML page.
+#               Added:  p3.save("shape_xform.html",offline=True)
+#
+#   01-02-2019  Reason: Only the direction of Zfv is used for the quiver arrow, not the magnitude.
+#                       The plotted coordinates of the tip of the Z-axis is in Zf[:,1,:], which
+#                       should be modified before the transform is applied to Zfo[1,:].
+#               Added:  Zfo[1,:] = 1.5*(Zfo[1,:]-Zfo[0,:]) + Zfo[0,:]
+#               Swap:   Zfv = 3*(Zf[:,1,:] - Zf[:,0,:])
+#               with:   Zfv = Zf[:,1,:] - Zf[:,0,:]
+#
+#  01-02-2019   Reason: Reformatted header DESC to prevent wrap-around text.
 
 
-# In[2]:
+# In[ ]:
 
 
 import ipyvolume.pylab as p3
@@ -24,15 +42,18 @@ import numpy as np
 from shapexformplot import *  # provides RTB for Python components to create and manipulate 3D graphic elements
 
 
-# In[3]:
+# In[ ]:
 
 
 # define a parametric cylinder and a coordinate frame about the world space origin
 (Xco, Yco, Zco) = parametric_cylinder(1.0, 2.0, 32)
 (Xfo, Yfo, Zfo) = parametric_frame(1)
 
+# stretch the unit length Z-axis to 1.5 units in length
+Zfo[1,:] = 1.5*(Zfo[1,:]-Zfo[0,:]) + Zfo[0,:]
 
-# In[4]:
+
+# In[ ]:
 
 
 # create homogeneous transform
@@ -47,7 +68,7 @@ for i in range(0,k):
    Tr.append(tr)
 
 
-# In[5]:
+# In[ ]:
 
 
 # apply transform to the parametric shape coordinates
@@ -62,7 +83,7 @@ for i in range(0,k):
     (Xf[i,:,:], Yf[i,:,:], Zf[i,:,:]) = shape_xform(Xfo, Yfo, Zfo, Tr[i])
 
 
-# In[6]:
+# In[ ]:
 
 
 # create ipyvolume figure to display cylinder and coordinate frame transform animation
@@ -95,7 +116,7 @@ Lz.line_material.visible = True
 # coordinate frame axes line segment tip arrows
 Xfv = Xf[:,1,:] - Xf[:,0,:]
 Yfv = Yf[:,1,:] - Yf[:,0,:]
-Zfv = 3*(Zf[:,1,:] - Zf[:,0,:])
+Zfv = Zf[:,1,:] - Zf[:,0,:]
 arrowcols = np.zeros((k,3,3))
 arrowcols[0:k,0,0] = 1.0
 arrowcols[0:k,1,1] = 1.0
@@ -111,7 +132,7 @@ p3.animation_control([Lx,Ly,Lz,q,s], interval=100)
 p3.show()
 
 
-# In[7]:
+# In[ ]:
 
 
 p3.save("shape_xform.html",offline=True)
