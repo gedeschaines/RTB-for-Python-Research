@@ -2,18 +2,14 @@ name: RTB-for-Python-Research
 channels:
  - conda-forge
 dependencies:
- - nodejs
+ - ipyvolume==0.5.1
+ - ipywidgets>=7.4.0
+ - ipywebrtc>=0.4
  - pip:
-   - traittypes
-   - traitlets
-   - ipywidgets>=7.4
+   - matplotlib
    - Pillow
    - scipy
    - numpy
-   - scikit-image>=0.13
    - requests
-   - ipywebrtc>=0.4
-   - pythreejs>=1.0
-   - matplotlib
-   - jupyterlab>=0.34
-- notebook>=5.3
+   - scikit-image>=0.13
+   - notebook>=5.3
