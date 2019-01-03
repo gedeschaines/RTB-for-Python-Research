@@ -1,6 +1,6 @@
 ipyvolume==0.5.1
 ipywidgets>=7.4.0
-matplotlib<2
+matplotlib
 Pillow
 scipy
 numpy
